@@ -8,7 +8,7 @@ import 'package:grpc/grpc.dart';
 class EventHandlerService {
   EventHandlerService();
 
-  static Future<void> handleBlocError<T>({
+  static Future<void> handleBlocEvent<T>({
     required Future<void> Function() action,
     required Emitter<T> emit,
     required T Function(String message) errorState,
