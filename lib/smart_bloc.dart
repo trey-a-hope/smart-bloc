@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_bloc/modal_service.dart';
+import 'package:toastification/toastification.dart';
 
 abstract class SmartBloc<B extends Bloc, S> extends StatelessWidget {
   static const _error = 'Error';
@@ -36,11 +36,60 @@ abstract class SmartBloc<B extends Bloc, S> extends StatelessWidget {
       final message = (state as dynamic).message as String;
 
       if (_hasError(state)) {
-        ModalService.showError(title: message);
+        _ModalService.showError(title: message);
       }
       if (_hasSuccess(state)) {
-        ModalService.showSuccess(title: message);
+        _ModalService.showSuccess(title: message);
       }
     }
+  }
+}
+
+class _ModalService {
+  static void showSuccess({
+    required String title,
+  }) {
+    _showToast(
+      title: title,
+      toastificationType: ToastificationType.success,
+      icon: const Icon(Icons.check),
+      primaryColor: Colors.green,
+    );
+  }
+
+  static void showError({
+    required String title,
+  }) {
+    _showToast(
+      title: title,
+      toastificationType: ToastificationType.error,
+      icon: const Icon(Icons.error),
+      primaryColor: Colors.red,
+    );
+  }
+
+  /// Shows a brief, customizable toast.
+  static void _showToast({
+    required String title,
+    required ToastificationType toastificationType,
+    required Widget icon,
+    required MaterialColor primaryColor,
+  }) {
+    toastification.show(
+      autoCloseDuration: const Duration(seconds: 3),
+      title: Text(title),
+      type: toastificationType,
+      style: ToastificationStyle.fillColored,
+      icon: icon,
+      primaryColor: primaryColor,
+      backgroundColor: primaryColor.shade100,
+      foregroundColor: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      borderRadius: BorderRadius.circular(12),
+      showProgressBar: false,
+      closeButtonShowType: CloseButtonShowType.onHover,
+      closeOnClick: true,
+    );
   }
 }
