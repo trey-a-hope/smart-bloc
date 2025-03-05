@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grpc/grpc.dart';
 
 // TODO: Add optional analytics.
 
@@ -21,6 +22,9 @@ class EventHandlerService {
       emit(errorState(errorMessage));
     } on DioException catch (e) {
       final errorMessage = e.message ?? 'Unknown DioException has occurred.';
+      emit(errorState(errorMessage));
+    } on GrpcError catch (e) {
+      final errorMessage = e.message ?? 'Unknown GRPC Error: ${e.codeName}';
       emit(errorState(errorMessage));
     } catch (e) {
       final errorMessage = 'Unexpected error: ${e.toString()}';
