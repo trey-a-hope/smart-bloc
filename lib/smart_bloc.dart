@@ -17,7 +17,7 @@ abstract class SmartBloc<B extends Bloc, S> extends StatelessWidget {
 
   // Abstract method that subclasses must implement to define the main content
   // when the state indicates data is loaded.
-  Widget buildLoadedContent(BuildContext context, dynamic state);
+  Widget buildLoadedContent(BuildContext context, S state);
 
   // Default implementation for a loading state, showing a spinning indicator.
   // Subclasses can override this if needed.
@@ -32,7 +32,7 @@ abstract class SmartBloc<B extends Bloc, S> extends StatelessWidget {
 
   // Core builder method that switches UI based on the state string.
   // Uses pattern matching to determine which content to display.
-  Widget builder<T>(BuildContext context, T state) => switch (state) {
+  Widget builder(BuildContext context, S state) => switch (state) {
         // If state string contains "Loading", show loading UI.
         final state when state.toString().contains(_loading) =>
           buildLoadingContent(),
