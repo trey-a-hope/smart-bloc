@@ -25,7 +25,9 @@ abstract class SmartBloc<B extends Bloc, S> extends StatelessWidget {
       const Center(child: CircularProgressIndicator());
 
   // Default error display with a message. Overridable by subclasses.
-  Widget buildErrorContent(String message) => Text('$_error: $message');
+  Widget buildErrorContent(String message) => SizedBox.shrink();
+
+  Widget buildSuccessContent(String message) => SizedBox.shrink();
 
   // Default display for an unrecognized state. Overridable by subclasses.
   Widget buildUnknownContent() => const Text('$_unknown state');
@@ -42,6 +44,9 @@ abstract class SmartBloc<B extends Bloc, S> extends StatelessWidget {
         // If state string contains "Error", extract message and show error UI.
         final state when state.toString().contains(_error) =>
           buildErrorContent((state as dynamic).message as String),
+        // If state string contains "Success", extract message and show error UI.
+        final state when state.toString().contains(_success) =>
+          buildSuccessContent((state as dynamic).message as String),
         // Fallback for unrecognized states.
         _ => buildUnknownContent(),
       };
